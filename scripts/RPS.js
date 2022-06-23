@@ -1,6 +1,6 @@
 const Choices = [ "ROCK", "PAPER", "SCISSORS" ];
 
-window.onload = alert(Game());
+alert(Game());
 
 
 
@@ -9,19 +9,16 @@ function Game()
     let playerWins = 0;
     let computerWins = 0;
 
-    for (let i = 0; i < 5; i++)
-    {
-        let playerChoice = GetPlayerChoice();
-        let computerChoice = ComputerPlay();
+    let playerChoice = GetPlayerChoice();
+    let computerChoice = ComputerPlay();
 
-        if (playerChoice === null)
-            return "You've forfeited! Computer wins.";
+    if (playerChoice === null)
+        return "You've forfeited! Computer wins.";
 
-        let result = PlayRound(playerChoice, computerChoice);
-        
-        //Record result.
-        result.toUpperCase().includes("WIN") ? playerWins++ : computerWins++;
-    }
+    let result = PlayRound(playerChoice, computerChoice);
+     
+    //Record result.
+    result.toUpperCase().includes("WIN") ? playerWins++ : computerWins++;
 
     let finalScore = `Player Wins: ${playerWins}\r\nComputer Wins: ${computerWins}`;
 
