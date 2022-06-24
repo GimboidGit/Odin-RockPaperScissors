@@ -9,14 +9,20 @@ function Game()
     let playerWins = 0;
     let computerWins = 0;
 
-    let playerChoice = GetPlayerChoice();
-    let computerChoice = ComputerPlay();
+    let result = "DRAW";
 
-    if (playerChoice === null)
-        return "You've forfeited! Computer wins.";
+    //HANDLE DRAWS
+    while (result.toUpperCase().includes("DRAW"))
+    {
+        let playerChoice = GetPlayerChoice();
+        let computerChoice = ComputerPlay();
 
-    let result = PlayRound(playerChoice, computerChoice);
-     
+        if (playerChoice === null)
+            return "You've forfeited! Computer wins.";
+
+        result = PlayRound(playerChoice, computerChoice);
+    }
+    
     //Record result.
     result.toUpperCase().includes("WIN") ? playerWins++ : computerWins++;
 
