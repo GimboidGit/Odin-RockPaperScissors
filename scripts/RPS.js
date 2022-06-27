@@ -1,36 +1,67 @@
 const Choices = [ "ROCK", "PAPER", "SCISSORS" ];
 
-alert(Game());
+
+//Add Event Listeners to buttons.
+const buttons = document.querySelectorAll(".buttons button");
+buttons.forEach
+    (button => button.addEventListener("click", PlayRound));
 
 
 
-function Game()
+let roundCount = 1;
+let playerWins = 0;
+let computerWins = 0;
+
+//Play a round of RPS with the choice passed via the BUTTON clicked.
+function PlayRound(event)
 {
-    let playerWins = 0;
-    let computerWins = 0;
+    if (roundCount > 5)
+        return;
 
-    let result = "DRAW";
-
-    //HANDLE DRAWS
-    while (result.toUpperCase().includes("DRAW"))
-    {
-        let playerChoice = GetPlayerChoice();
-        let computerChoice = ComputerPlay();
-
-        if (playerChoice === null)
-            return "You've forfeited! Computer wins.";
-
-        result = PlayRound(playerChoice, computerChoice);
-    }
+    let playerChoice = event.target.innerText;
+    let computerChoice = ComputerPlay();
     
-    //Record result.
+    let result = GetRoundResult(playerChoice, computerChoice);
+
+    AddToResultPane(`Round ${(roundCount)}: ${result}`);
+
+    if (result.includes("DRAW"))
+        return;
+
+    roundCount++;
     result.toUpperCase().includes("WIN") ? playerWins++ : computerWins++;
 
-    let finalScore = `Player Wins: ${playerWins}\r\nComputer Wins: ${computerWins}`;
+    if (roundCount > 5)
+    {
+        let finalScore = `Player Wins: ${playerWins}\r\nComputer Wins: ${computerWins}`;
+        let resultWording = playerWins > computerWins ? "Win" : "Lose";
 
-    let resultWording = playerWins > computerWins ? "Win" : "Lose";
+        AddToResultPane(`You ${resultWording}!\r\n\r\n${finalScore}`);
+        AddPlayAgainButton();
+    }
+}
 
-    return `You ${resultWording}!\r\n\r\n${finalScore}`;
+
+function AddToResultPane(text)
+{
+    const resultPane = document.querySelector(".results");
+
+    const para = document.createElement("p");
+    para.innerText = text;
+    resultPane.appendChild(para);
+}
+
+function AddPlayAgainButton()
+{
+    const body = document.querySelector("body");
+    
+    const playAgain = document.createElement("button");
+    
+    playAgain.innerText = "Play Again?";
+    //This will reload the page when clicked.
+    playAgain.addEventListener("click", () => { location.reload(); })
+
+    body.appendChild(playAgain);
 }
 
 
@@ -40,41 +71,23 @@ function ComputerPlay()
 }
 
 
-function GetPlayerChoice()
-{
-    let message = "Choose one of the following:\r\n";
-    message += Choices.join("\r\n");
-
-    let choice = prompt(message);
-
-    //User cancelled Prompt.
-    if (choice === null)
-        return choice;
-
-    //Validate Choice.
-    if (!Choices.includes(choice.trim().toUpperCase()))
-    {
-        alert("Choice invalid. Try again!");
-        choice = GetPlayerChoice();
-    }
-
-    return choice;
-}
-
-
-function PlayRound(playerChoice, computerChoice)
+function GetRoundResult(playerChoice, computerChoice)
 {
     playerChoice = String(playerChoice).toUpperCase();
     computerChoice = String(computerChoice).toUpperCase();
 
     if (playerChoice === computerChoice)
-        return "It's a Draw!";
+        return "It's a DRAW! Try again...";
 
     for (let i = 0; i < Choices.length; i++)
     {
-        if (playerChoice === Choices[i] && computerChoice === Choices[(Choices.length - i) - 1])
-            return `You Win! ${playerChoice} beats ${computerChoice}`;
+        let prevIndex = i - 1;
+        if (i === 0) //Wrap back round to end of array.
+            prevIndex = 2;
+
+        if (playerChoice === Choices[i] && computerChoice === Choices[prevIndex])
+            return `You WIN! ${playerChoice} beats ${computerChoice}`;
     }
 
-    return `You Lose! ${computerChoice} beats ${playerChoice}`;
+    return `You LOSE! ${computerChoice} beats ${playerChoice}`;
 }
