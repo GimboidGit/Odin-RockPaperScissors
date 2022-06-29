@@ -15,3 +15,11 @@ As of 29/06/2022, I have uploaded my second version.
 This version now features a UI to make the experience a lot more user friendly.
 
 Also chucked in some Bug Fixed, becasue why not?
+
+
+<br>
+<br>
+
+You can see the GitHub pages published site here:
+
+https://gimboidgit.github.io/Odin-RockPaperScissors/
