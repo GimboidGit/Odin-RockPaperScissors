@@ -29,12 +29,12 @@ function PlayRound(event)
         return;
 
     roundCount++;
-    result.toUpperCase().includes("WIN") ? playerWins++ : computerWins++;
+    result.includes("WIN") ? playerWins++ : computerWins++;
 
     if (roundCount > 5)
     {
         let finalScore = `Player Wins: ${playerWins}\r\nComputer Wins: ${computerWins}`;
-        let resultWording = playerWins > computerWins ? "Win" : "Lose";
+        let resultWording = playerWins > computerWins ? "WON" : "LOST";
 
         AddToResultPane(`You ${resultWording}!\r\n\r\n${finalScore}`);
         AddPlayAgainButton();
@@ -53,15 +53,17 @@ function AddToResultPane(text)
 
 function AddPlayAgainButton()
 {
-    const body = document.querySelector("body");
+    const results = document.querySelector(".results");
     
     const playAgain = document.createElement("button");
     
+    playAgain.setAttribute("class", "play-again-butt");
     playAgain.innerText = "Play Again?";
+
     //This will reload the page when clicked.
     playAgain.addEventListener("click", () => { location.reload(); })
 
-    body.appendChild(playAgain);
+    results.appendChild(playAgain);
 }
 
 
